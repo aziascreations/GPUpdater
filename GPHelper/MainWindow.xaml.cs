@@ -69,7 +69,22 @@ namespace GPHelper {
             bool IsBootEnabled = toggleButtonBoot.IsChecked.HasValue ? toggleButtonBoot.IsChecked.Value : false;
             bool IsSyncEnabled = toggleButtonSync.IsChecked.HasValue ? toggleButtonSync.IsChecked.Value : false;
 
-            await Task.Run(() => ExecuteGPUpdate(IsForceEnabled, IsLogoffEnabled, IsBootEnabled, IsSyncEnabled));
+            bool targetAll = radioButtonBoth.IsChecked.HasValue ? radioButtonBoth.IsChecked.Value : false;
+            bool targetComputer = radioButtonComputer.IsChecked.HasValue ? radioButtonComputer.IsChecked.Value : false;
+            bool targetUser = radioButtonUser.IsChecked.HasValue ? radioButtonUser.IsChecked.Value : false;
+
+            int TargetNumber = (targetAll ? 0 : (targetComputer ? 1 : 2));
+
+            int waitTime;
+
+            if (int.TryParse(textBoxWait.Text.Replace(" ", ""), out waitTime)) {
+                if(waitTime < -1)
+                    waitTime = 600;
+            } else {
+                waitTime = 600;
+            }
+
+            await Task.Run(() => ExecuteGPUpdate(IsForceEnabled, IsLogoffEnabled, IsBootEnabled, IsSyncEnabled, TargetNumber, waitTime));
 
             buttonUpdate.IsEnabled = true;
             //buttonLogs.IsEnabled = true;
@@ -80,7 +95,7 @@ namespace GPHelper {
 
         }
 
-        private void ExecuteGPUpdate(Boolean IsForceEnabled, Boolean IsLogoffEnabled, Boolean IsBootEnabled, Boolean IsSyncEnabled) {
+        private void ExecuteGPUpdate(Boolean IsForceEnabled, Boolean IsLogoffEnabled, Boolean IsBootEnabled, Boolean IsSyncEnabled, int TargetNumber, int waitTime) {
             ProcessStartInfo procStartInfo = new ProcessStartInfo() {
                 //RedirectStandardError = true,
                 //FileName = "runas.exe",
@@ -95,6 +110,20 @@ namespace GPHelper {
             procStartInfo.Arguments += (IsLogoffEnabled ? "/logoff " : "");
             procStartInfo.Arguments += (IsBootEnabled ? "/boot " : "");
             procStartInfo.Arguments += (IsSyncEnabled ? "/sync " : "");
+
+            switch(TargetNumber) {
+                case 1:
+                    procStartInfo.Arguments += "/target:computer ";
+                    break;
+                case 2:
+                    procStartInfo.Arguments += "/target:user ";
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+
+            procStartInfo.Arguments += "/wait:"+waitTime;
 
             Console.Out.WriteLine("This command will be used: " + procStartInfo.FileName + " " + procStartInfo.Arguments);
 

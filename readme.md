@@ -12,4 +12,4 @@ This a simple project that I made to try out Visual Studio 2015 and C#, so it is
 
 ## Screenshot
 
-![Screenshot](http://i.imgur.com/9IvKEfI.png)
+![Screenshot](http://i.imgur.com/z6H3mvH.png)
