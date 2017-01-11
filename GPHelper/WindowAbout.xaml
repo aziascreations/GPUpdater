@@ -1,0 +1,15 @@
+﻿<Window x:Class="GPHelper.WindowAbout"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GPHelper"
+        mc:Ignorable="d"
+        Title="About" Height="278.674" Width="474.64" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid>
+        <Popup HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="buttonClose" Content="Close" Height="28" Margin="190,0,0,10" VerticalAlignment="Bottom" Click="CloseAboutWindow" HorizontalAlignment="Left" Width="89"/>
+        <TextBlock x:Name="textBlock" TextWrapping="Wrap" Margin="10,10,10,43"><Run Text="GPUpdater is a utility that allows the user to quickly reload Group Policies without using a command prompt."/><LineBreak/><Run/><LineBreak/><Run Text="This software is a freewa"/><Run Text="re"/><Run Text=" and is provided as such, without any warranty."/><LineBreak/><Run Text="In no event shall the author be liable for any claim, damages or other liability arising from, out of, or in connection with the software or the use or dealing in the software."/><LineBreak/><Run/><LineBreak/><Run Text="Version 1.1.4.0"/><LineBreak/><Run/><LineBreak/><Run Text="Created by Bozet Herwin"/><LineBreak/><Run Text="    Github: "/><Run Text="https://github.com/aziascreations"/><LineBreak/><Run Text="    Email: herwin.bozet@gmail.com"/><LineBreak/><Run/></TextBlock>
+
+    </Grid>
+</Window>

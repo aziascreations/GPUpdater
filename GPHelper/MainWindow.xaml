@@ -1,0 +1,46 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GPHelper"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GPHelper.MainWindow"
+        mc:Ignorable="d"
+        Title="{DynamicResource TitleWindow}" Height="208.6" Width="340.204" ResizeMode="CanMinimize" KeyDown="MainWindowKeyDown">
+    <Window.Resources>
+        <System:String x:Key="TooltipLogoff">Causes a logoff after the Group Policy settings have been refreshed. This option has no effect if there are no extensions called that require a logoff.</System:String>
+        <System:String x:Key="TooltipUpdate">Launch GPUpdate</System:String>
+        <System:String x:Key="TooltipTargetAll">Processes the Computer and User settings.</System:String>
+        <System:String x:Key="TooltipTargetComputer">Processes only the Computer settings.</System:String>
+        <System:String x:Key="TooltipTargetUser">Processes only the User settings.</System:String>
+        <System:String x:Key="TooltipSync">Causes the next foreground policy application to be done synchronously. The "Force Update" and "Wait" options will be ignored.</System:String>
+        <System:String x:Key="TooltipForce">Ignores all processing optimizations and reapplies all settings.</System:String>
+        <System:String x:Key="TitleWindow">Group Policies Updater</System:String>
+        <System:String x:Key="TooltipBoot">Causes a reboot after the Group Policy settings are refreshed. This option has no effect if there are no extensions called that require a reboot.</System:String>
+    </Window.Resources>
+    <Grid>
+        <Button x:Name="buttonUpdate" Content="Update GPO" HorizontalAlignment="Right" Height="32" Margin="0,0,10,10" Width="120" VerticalAlignment="Bottom" Click="UpdateGroupPolicies" ToolTip="{DynamicResource TooltipUpdate}"/>
+
+        <ProgressBar x:Name="progressBar" VerticalAlignment="Bottom" IsIndeterminate="True"/>
+
+        <Grid x:Name="gridOptions" Height="126" VerticalAlignment="Top" RenderTransformOrigin="0.443,0.485">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="175*"/>
+                <ColumnDefinition Width="177*"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton x:Name="toggleButtonOptionForce" HorizontalAlignment="Left" Height="24" Margin="10,10,0,0" VerticalAlignment="Top" Width="40" Content="" ToolTip="{DynamicResource TooltipForce}"/>
+            <Label x:Name="labelOptionForce" Content="Force Update" HorizontalAlignment="Left" Height="26" Margin="50,8,0,0" VerticalAlignment="Top" Width="95" FontWeight="Bold" MouseDown="LabelForceClick" ToolTip="{DynamicResource TooltipForce}"/>
+            <ToggleButton x:Name="toggleButtonLogoff" Content="ToggleButton" HorizontalAlignment="Left" Height="24" Margin="10,39,0,0" VerticalAlignment="Top" Width="40" Checked="ToggleLogoffChecked" ToolTip="{DynamicResource TooltipLogoff}"/>
+            <ToggleButton x:Name="toggleButtonBoot" Content="ToggleButton" HorizontalAlignment="Left" Height="24" Margin="10,68,0,0" VerticalAlignment="Top" Width="40" Checked="ToggleBootChecked" ToolTip="{DynamicResource TooltipBoot}"/>
+            <Label x:Name="labelOptionLogoff" Content="Logoff" HorizontalAlignment="Left" Height="26" Margin="50,37,0,0" VerticalAlignment="Top" Width="60" FontWeight="Bold" MouseDown="LabelLogoffClick" ToolTip="{DynamicResource TooltipLogoff}"/>
+            <Label x:Name="labelOptionBoot" Content="Reboot" HorizontalAlignment="Left" Height="26" Margin="50,66,0,0" VerticalAlignment="Top" Width="60" FontWeight="Bold" MouseDown="LabelBootClick" ToolTip="{DynamicResource TooltipBoot}"/>
+            <RadioButton x:Name="radioButtonBoth" Content="Update All" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="10,11,0,0" VerticalAlignment="Top" Width="120" IsChecked="True" ToolTip="{DynamicResource TooltipTargetAll}"/>
+            <RadioButton x:Name="radioButtonComputer" Content="Update Computer" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="10,40,0,0" VerticalAlignment="Top" Width="120" ToolTip="{DynamicResource TooltipTargetComputer}"/>
+            <RadioButton x:Name="radioButtonUser" Content="Update Users" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="10,69,0,0" VerticalAlignment="Top" Width="120" ToolTip="{DynamicResource TooltipTargetUser}"/>
+            <ToggleButton x:Name="toggleButtonSync" Content="ToggleButton" HorizontalAlignment="Left" Height="24" Margin="10,97,0,0" VerticalAlignment="Top" Width="40" Checked="ToggleBootChecked" ToolTip="{DynamicResource TooltipSync}"/>
+            <Label x:Name="labelOptionSync" Content="Synchronized" HorizontalAlignment="Left" Height="26" Margin="50,95,0,0" VerticalAlignment="Top" Width="95" FontWeight="Bold" MouseDown="LabelSyncClick" ToolTip="{DynamicResource TooltipSync}"/>
+        </Grid>
+        <Button x:Name="buttonLogs" Content="Logs " HorizontalAlignment="Left" Margin="10,0,0,10" Width="80" Height="32" VerticalAlignment="Bottom" Click="ShowLogs" IsEnabled="False"/>
+
+    </Grid>
+</Window>
