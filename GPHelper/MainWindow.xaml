@@ -7,7 +7,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GPHelper.MainWindow"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="{DynamicResource TitleWindow}" Height="240" Width="320" ResizeMode="CanMinimize" KeyDown="MainWindowKeyDown">
+        Title="{DynamicResource TitleWindow}" Height="240" Width="320" ResizeMode="CanMinimize" KeyDown="MainWindowKeyDown" Closed="Window_Closed">
 
     <Window.Resources>
         <System:String x:Key="TooltipLogoff">Causes a logoff after the Group Policy settings have been refreshed. This option has no effect if there are no extensions called that require a logoff.</System:String>
@@ -46,7 +46,7 @@
             <TextBox x:Name="textBoxWait" Grid.Column="1" HorizontalAlignment="Left" Height="26" Margin="81,127,0,0" TextWrapping="Wrap" Text="600" VerticalAlignment="Top" Width="45" ToolTip="{DynamicResource TooltipWait}"/>
             <Label x:Name="labelMisc" Content="Wait Time :" HorizontalAlignment="Left" Height="27" Margin="6,126,0,0" VerticalAlignment="Top" Width="75" FontWeight="Bold" Grid.Column="1" ToolTip="{DynamicResource TooltipWait}"/>
         </Grid>
-        <Button x:Name="buttonLogs" Content="Logs " HorizontalAlignment="Left" Margin="10,0,0,10" Width="80" Height="32" VerticalAlignment="Bottom" Click="ShowLogs" IsEnabled="False"/>
+        <Button x:Name="buttonLogs" Content="Logs " HorizontalAlignment="Left" Margin="10,0,0,10" Width="80" Height="32" VerticalAlignment="Bottom" Click="ShowLogs"/>
 
     </Grid>
 </Window>

@@ -1,0 +1,15 @@
+﻿<Window x:Name="windowLogs" x:Class="GPUpdater.WindowLogs"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GPUpdater"
+        mc:Ignorable="d"
+        Title="Logs" Height="300" Width="382.584" ResizeMode="CanMinimize" ShowInTaskbar="False">
+    <Grid>
+        <Button x:Name="buttonClose" Content="Close" HorizontalAlignment="Right" Height="28" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90" Click="buttonClose_Click"/>
+        <Button x:Name="buttonClear" Content="Clear" HorizontalAlignment="Left" Height="28" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="90" Click="buttonClear_Click"/>
+        <TextBlock x:Name="textBlockLogs" TextWrapping="Wrap" Margin="0,0,0,48"/>
+
+    </Grid>
+</Window>

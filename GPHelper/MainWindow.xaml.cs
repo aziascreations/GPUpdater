@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,7 +25,7 @@ namespace GPHelper {
         //Logoff switch functions
         private void LabelLogoffClick(object sender, MouseButtonEventArgs e) {
             bool IsBootEnabled = toggleButtonBoot.IsChecked.HasValue ? toggleButtonBoot.IsChecked.Value : false;
-            
+
             if(IsBootEnabled)
                 toggleButtonBoot.IsChecked = !toggleButtonBoot.IsChecked;
 
@@ -34,7 +35,7 @@ namespace GPHelper {
         private void ToggleLogoffChecked(object sender, RoutedEventArgs e) {
             bool IsBootEnabled = toggleButtonBoot.IsChecked.HasValue ? toggleButtonBoot.IsChecked.Value : false;
 
-            if (IsBootEnabled)
+            if(IsBootEnabled)
                 toggleButtonBoot.IsChecked = !toggleButtonBoot.IsChecked;
         }
 
@@ -42,7 +43,7 @@ namespace GPHelper {
         private void LabelBootClick(object sender, MouseButtonEventArgs e) {
             bool IsLogoffEnabled = toggleButtonLogoff.IsChecked.HasValue ? toggleButtonLogoff.IsChecked.Value : false;
 
-            if (IsLogoffEnabled)
+            if(IsLogoffEnabled)
                 toggleButtonLogoff.IsChecked = !toggleButtonLogoff.IsChecked;
 
             toggleButtonBoot.IsChecked = !toggleButtonBoot.IsChecked;
@@ -51,18 +52,13 @@ namespace GPHelper {
         private void ToggleBootChecked(object sender, RoutedEventArgs e) {
             bool IsLogoffEnabled = toggleButtonLogoff.IsChecked.HasValue ? toggleButtonLogoff.IsChecked.Value : false;
 
-            if (IsLogoffEnabled)
+            if(IsLogoffEnabled)
                 toggleButtonLogoff.IsChecked = !toggleButtonLogoff.IsChecked;
         }
 
         private async void UpdateGroupPolicies(object sender, RoutedEventArgs e) {
             buttonUpdate.IsEnabled = false;
-            buttonLogs.IsEnabled = false;
             progressBar.Visibility = Visibility.Visible;
-
-            //await Task.Delay(1000);
-
-            //await ExecuteGPUpdate();
 
             bool IsForceEnabled = toggleButtonOptionForce.IsChecked.HasValue ? toggleButtonOptionForce.IsChecked.Value : false;
             bool IsLogoffEnabled = toggleButtonLogoff.IsChecked.HasValue ? toggleButtonLogoff.IsChecked.Value : false;
@@ -77,7 +73,7 @@ namespace GPHelper {
 
             int waitTime;
 
-            if (int.TryParse(textBoxWait.Text.Replace(" ", ""), out waitTime)) {
+            if(int.TryParse(textBoxWait.Text.Replace(" ", ""), out waitTime)) {
                 if(waitTime < -1)
                     waitTime = 600;
             } else {
@@ -87,25 +83,22 @@ namespace GPHelper {
             await Task.Run(() => ExecuteGPUpdate(IsForceEnabled, IsLogoffEnabled, IsBootEnabled, IsSyncEnabled, TargetNumber, waitTime));
 
             buttonUpdate.IsEnabled = true;
-            //buttonLogs.IsEnabled = true;
             progressBar.Visibility = Visibility.Hidden;
         }
 
         private void ShowLogs(object sender, RoutedEventArgs e) {
-
+            Window w = new GPUpdater.WindowLogs();
+            w.Show();
         }
 
         private void ExecuteGPUpdate(Boolean IsForceEnabled, Boolean IsLogoffEnabled, Boolean IsBootEnabled, Boolean IsSyncEnabled, int TargetNumber, int waitTime) {
             ProcessStartInfo procStartInfo = new ProcessStartInfo() {
-                //RedirectStandardError = true,
-                //FileName = "runas.exe",
-                //Arguments = "/user:Administrator \"cmd /K GPUpdate.exe"
                 FileName = @"C:\Windows\System32\gpupdate.exe",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-            
+
             procStartInfo.Arguments = (IsForceEnabled ? "/force " : "");
             procStartInfo.Arguments += (IsLogoffEnabled ? "/logoff " : "");
             procStartInfo.Arguments += (IsBootEnabled ? "/boot " : "");
@@ -123,29 +116,40 @@ namespace GPHelper {
                     break;
             }
 
-            procStartInfo.Arguments += "/wait:"+waitTime;
+            procStartInfo.Arguments += "/wait:" + waitTime;
 
             Console.Out.WriteLine("This command will be used: " + procStartInfo.FileName + " " + procStartInfo.Arguments);
 
-            using (Process proc = new Process()) {
+            Logs.logs.Add("> " + procStartInfo.FileName + " " + procStartInfo.Arguments);
+
+            using(Process proc = new Process()) {
                 proc.StartInfo = procStartInfo;
                 proc.Start();
 
-                string output = "";
+                while(!proc.StandardOutput.EndOfStream) {
+                    string output = proc.StandardOutput.ReadLine();
 
-                while (!proc.StandardOutput.EndOfStream) {
-                    if(!string.IsNullOrWhiteSpace(proc.StandardOutput.ReadLine()))
-                        output += proc.StandardOutput.ReadLine() + "\n";
+                    if(!string.IsNullOrWhiteSpace(output)) {
+                        Console.Out.WriteLine(output);
+                        Logs.logs.Add(output);
+                    }
                 }
-                Console.Out.WriteLine(output);
             }
         }
 
         private void MainWindowKeyDown(object sender, KeyEventArgs e) {
-            if (e.Key.ToString() == "F1") {
+            if(e.Key.ToString() == "F1") {
                 Window w = new WindowAbout();
                 w.Show();
             }
         }
+
+        private void Window_Closed(object sender, EventArgs e) {
+            Process.GetCurrentProcess().Kill();
+        }
+    }
+
+    public static class Logs {
+        public static ArrayList logs = new ArrayList();
     }
 }
